@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Software Engineer</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f5f2;
+    --surface: #ffffff;
+    --soft: #eef1f6;
+    --accent: #7c8db5;
+    --accent-2: #b8a9c9;
+    --accent-3: #a8c5b8;
+    --text: #2b2d3a;
+    --muted: #6b6f80;
+    --border: #e3e1dc;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  h1,h2,h3 { font-family: 'Playfair Display', serif; }
+  .navbar { background: rgba(247,245,242,.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  .navbar-brand { font-weight: 600; letter-spacing: .5px; }
+  .nav-link { color: var(--text) !important; font-weight: 500; }
+  .nav-link:hover { color: var(--accent) !important; }
+  .hero {
+    min-height: 92vh;
+    display: flex; align-items: center;
+    background: linear-gradient(135deg, #f7f5f2 0%, #eef1f6 50%, #f0e9f3 100%);
+    position: relative;
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(circle at 80% 20%, rgba(124,141,181,.18), transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(184,169,201,.18), transparent 50%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .tag { display: inline-block; padding: 6px 14px; border-radius: 999px; background: var(--soft); color: var(--accent); font-size: .85rem; font-weight: 500; margin: 4px; }
+  .btn-soft { background: var(--accent); color: #fff; border: none; border-radius: 999px; padding: 10px 26px; font-weight: 500; transition: transform .2s, box-shadow .2s; }
+  .btn-soft:hover { background: #6a7ca6; color: #fff; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(124,141,181,.35); }
+  .btn-outline-soft { border: 1.5px solid var(--accent); color: var(--accent); border-radius: 999px; padding: 10px 26px; font-weight: 500; background: transparent; transition: all .2s; }
+  .btn-outline-soft:hover { background: var(--accent); color: #fff; }
+  section { padding: 90px 0; }
+  .section-title { font-size: 2.4rem; margin-bottom: 12px; }
+  .section-sub { color: var(--muted); max-width: 560px; }
+  .card-soft {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+    padding: 28px; height: 100%; transition: transform .3s, box-shadow .3s;
+  }
+  .card-soft:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(43,45,58,.08); }
+  .icon-bubble {
+    width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center;
+    background: var(--soft); color: var(--accent); font-size: 1.3rem; margin-bottom: 16px;
+  }
+  .skill-bar { height: 8px; background: var(--soft); border-radius: 999px; overflow: hidden; }
+  .skill-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 999px; width: 0; transition: width 1.4s ease; }
+  .profile-photo {
+    width: 180px; height: 180px; border-radius: 50%; object-fit: cover;
+    border: 4px solid var(--surface); box-shadow: 0 10px 30px rgba(43,45,58,.12);
+  }
+  .project-img {
+    display: grid; place-items: center; color: #fff; font-size: 2.5rem; margin-bottom: 18px;
+  }
+  .timeline { border-left: 2px solid var(--border); padding-left: 28px; position: relative; }
+  .timeline-item { position: relative; margin-bottom: 32px; }
+  .timeline-item::before {
+    content: ""; position: absolute; left: -35px; top: 6px; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--accent); border: 3px solid var(--bg);
+  }
+  .contact-input { border: 1.5px solid var(--border); border-radius: 12px; padding: 12px 16px; background: var(--surface); }
+  .contact-input:focus { border-color: var(--accent); box-shadow: 0 0 0 .2rem rgba(124,141,181,.15); }
+  footer { background: var(--surface); border-top: 1px solid var(--border); padding: 30px 0; color: var(--muted); }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+  .cursor-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transition: transform .05s; }
+  .cursor-ring { width: 34px; height: 34px; border: 1.5px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transition: transform .15s ease-out, opacity .2s; opacity: .6; }
+  @media (max-width: 768px) { .cursor-dot, .cursor-ring { display: none; } }
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="#home">Rafsanjani Galih Ekasmara</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+        <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+        <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section id="home" class="hero">
+  <div class="container hero-content">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <p class="text-uppercase small fw-semibold" style="color:var(--accent); letter-spacing:2px;">Software Engineer</p>
+        <h1 class="display-3 fw-bold mb-3">Halo, saya <span style="color:var(--accent)">Rafsanjani Galih Ekasmara</span></h1>
+        <p class="lead mb-4" style="color:var(--muted); max-width: 560px;">
+          Saya membangun aplikasi web yang bersih, cepat, dan menyenangkan digunakan. Fokus pada pengalaman pengguna, arsitektur yang rapi, dan kode yang mudah dirawat.
+        </p>
+        <div class="mb-4">
+          <span class="tag"><i class="bi bi-code-slash me-1"></i>Frontend</span>
+          <span class="tag"><i class="bi bi-server me-1"></i>Backend</span>
+          <span class="tag"><i class="bi bi-cloud me-1"></i>Cloud</span>
+          <span class="tag"><i class="bi bi-phone me-1"></i>Mobile</span>
+        </div>
+        <a href="#projects" class="btn btn-soft me-2">Lihat Proyek</a>
+        <a href="#contact" class="btn btn-outline-soft">Hubungi Saya</a>
+      </div>
+      <div class="col-lg-5 d-none d-lg-block text-center">
+        <div class="card-soft d-inline-block p-4">
+          <img src="img/profile.svg" alt="Foto Rafsanjani Galih Ekasmara" class="profile-photo mb-3">
+          <p class="mt-2 mb-0 fw-semibold">5+ tahun pengalaman</p>
+          <small style="color:var(--muted);">Tangerang Selatan, Indonesia</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5 reveal">
+        <div class="card-soft">
+          <div class="icon-bubble"><i class="bi bi-person"></i></div>
+          <h3>Tentang Saya</h3>
+          <p style="color:var(--muted);">Saya adalah software engineer dengan minat kuat pada pengembangan full-stack. Saya percaya kode yang baik adalah kode yang bisa dibaca, diuji, dan diubah dengan mudah. Saya senang belajar teknologi baru dan berkolaborasi dalam tim.</p>
+          <div class="d-flex gap-3 mt-3">
+            <a href="#" class="text-decoration-none" style="color:var(--accent);"><i class="bi bi-github fs-4"></i></a>
+            <a href="#" class="text-decoration-none" style="color:var(--accent);"><i class="bi bi-linkedin fs-4"></i></a>
+            <a href="#" class="text-decoration-none" style="color:var(--accent);"><i class="bi bi-twitter-x fs-4"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-7 reveal">
+        <h2 class="section-title">Apa yang saya lakukan</h2>
+        <p class="section-sub mb-4">Membantu bisnis dan startup membangun produk digital yang andal, dari ide hingga produksi.</p>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card-soft">
+              <div class="icon-bubble"><i class="bi bi-laptop"></i></div>
+              <h5>Web Development</h5>
+              <p class="small mb-0" style="color:var(--muted);">Aplikasi web modern dengan React, Next.js, dan Vue.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card-soft">
+              <div class="icon-bubble"><i class="bi bi-hdd-network"></i></div>
+              <h5>Backend & API</h5>
+              <p class="small mb-0" style="color:var(--muted);">REST/GraphQL, Node.js, Go, database design.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card-soft">
+              <div class="icon-bubble"><i class="bi bi-cloud-check"></i></div>
+              <h5>DevOps & Cloud</h5>
+              <p class="small mb-0" style="color:var(--muted);">CI/CD, Docker, AWS, monitoring.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card-soft">
+              <div class="icon-bubble"><i class="bi bi-phone"></i></div>
+              <h5>Mobile</h5>
+              <p class="small mb-0" style="color:var(--muted);">React Native & Flutter.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" style="background: var(--soft);">
+  <div class="container">
+    <h2 class="section-title reveal">Keahlian</h2>
+    <p class="section-sub mb-5 reveal">Teknologi yang saya gunakan sehari-hari.</p>
+    <div class="row g-4">
+      <div class="col-md-6 reveal">
+        <div class="mb-3"><div class="d-flex justify-content-between mb-1"><span>JavaScript / TypeScript</span><span style="color:var(--muted);">95%</span></div><div class="skill-bar"><div class="skill-fill" data-w="95"></div></div></div>
+        <div class="mb-3"><div class="d-flex justify-content-between mb-1"><span>React / Next.js</span><span style="color:var(--muted);">90%</span></div><div class="skill-bar"><div class="skill-fill" data-w="90"></div></div></div>
+        <div class="mb-3"><div class="d-flex justify-content-between mb-1"><span>Node.js</span><span style="color:var(--muted);">88%</span></div><div class="skill-bar"><div class="skill-fill" data-w="88"></div></div></div>
+        <div class="mb-3"><div class="d-flex justify-content-between mb-1"><span>SQL / PostgreSQL</span><span style="color:var(--muted);">80%</span></div><div class="skill-bar"><div class="skill-fill" data-w="80"></div></div></div>
+      </div>
+      <div class="col-md-6 reveal">
+        <div class="mb-3"><div class="d-flex justify-content-between mb-1"><span>Go</span><span style="color:var(--muted);">75%</span></div><div class="skill-bar"><div class="skill-fill" data-w="75"></div></div></div>
+        <div class="mb-3"><div class="d-flex justify-content-between mb-1"><span>Docker / Kubernetes</span><span style="color:var(--muted);">70%</span></div><div class="skill-bar"><div class="skill-fill" data-w="70"></div></div></div>
+        <div class="mb-3"><div class="d-flex justify-content-between mb-1"><span>AWS / GCP</span><span style="color:var(--muted);">72%</span></div><div class="skill-bar"><div class="skill-fill" data-w="72"></div></div></div>
+        <div class="mb-3"><div class="d-flex justify-content-between mb-1"><span>UI/UX Design</span><span style="color:var(--muted);">65%</span></div><div class="skill-bar"><div class="skill-fill" data-w="65"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <h2 class="section-title reveal">Proyek Pilihan</h2>
+    <p class="section-sub mb-5 reveal">Beberapa proyek yang saya bangun dan pelihara.</p>
+    <div class="row g-4">
+      <div class="col-md-4 reveal">
+        <div class="card-soft">
+          <div class="project-img"><i class="bi bi-cart3"></i></div>
+          <h5>E-Commerce Platform</h5>
+          <p class="small" style="color:var(--muted);">Platform toko online dengan dashboard admin, pembayaran, dan manajemen stok.</p>
+          <div class="d-flex gap-2 flex-wrap">
+            <span class="tag">Next.js</span><span class="tag">PostgreSQL</span><span class="tag">Stripe</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="card-soft">
+          <div class="project-img" style="background: linear-gradient(135deg, var(--accent-3), var(--accent));"><i class="bi bi-chat-dots"></i></div>
+          <h5>Realtime Chat App</h5>
+          <p class="small" style="color:var(--muted);">Aplikasi chat realtime dengan WebSocket, room, dan notifikasi.</p>
+          <div class="d-flex gap-2 flex-wrap">
+            <span class="tag">React</span><span class="tag">Socket.io</span><span class="tag">Redis</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 reveal">
+        <div class="card-soft">
+          <div class="project-img" style="background: linear-gradient(135deg, var(--accent-2), var(--accent-3));"><i class="bi bi-graph-up"></i></div>
+          <h5>Analytics Dashboard</h5>
+          <p class="small" style="color:var(--muted);">Dashboard analitik dengan grafik interaktif dan export laporan.</p>
+          <div class="d-flex gap-2 flex-wrap">
+            <span class="tag">Vue</span><span class="tag">D3.js</span><span class="tag">Go</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience" style="background: var(--soft);">
+  <div class="container">
+    <h2 class="section-title reveal">Pengalaman</h2>
+    <p class="section-sub mb-5 reveal">Perjalanan karir saya.</p>
+    <div class="timeline reveal">
+      <div class="timeline-item">
+        <h5 class="mb-1">Senior Software Engineer — TechCorp</h5>
+        <small style="color:var(--muted);">2023 — Sekarang</small>
+        <p class="mt-2 mb-0" style="color:var(--muted);">Memimpin pengembangan platform SaaS, meningkatkan performa 40%.</p>
+      </div>
+      <div class="timeline-item">
+        <h5 class="mb-1">Software Engineer — StartupHub</h5>
+        <small style="color:var(--muted);">2021 — 2023</small>
+        <p class="mt-2 mb-0" style="color:var(--muted);">Membangun MVP dan fitur core produk dari nol.</p>
+      </div>
+      <div class="timeline-item">
+        <h5 class="mb-1">Junior Developer — WebAgency</h5>
+        <small style="color:var(--muted);">2019 — 2021</small>
+        <p class="mt-2 mb-0" style="color:var(--muted);">Mengembangkan website klien dan maintenance.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7 reveal">
+        <h2 class="section-title text-center">Hubungi Saya</h2>
+        <p class="section-sub text-center mx-auto mb-4">Punya proyek atau ingin berkolaborasi? Kirim pesan.</p>
+        <form id="contactForm" class="card-soft">
+          <div class="mb-3"><input type="text" class="form-control contact-input" placeholder="Nama" required></div>
+          <div class="mb-3"><input type="email" class="form-control contact-input" placeholder="Email" required></div>
+          <div class="mb-3"><textarea class="form-control contact-input" rows="4" placeholder="Pesan" required></textarea></div>
+          <button type="submit" class="btn btn-soft w-100">Kirim Pesan</button>
+          <div id="formMsg" class="text-center mt-3 small" style="color:var(--accent-3);"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <span>© 2026 Rafsanjani Galih Ekasmara</span>
+  </div>
+</footer>
+
+<div class="cursor-dot" id="dot"></div>
+<div class="cursor-ring" id="ring"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); } });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Skill bars animate
+  const skillObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.skill-fill').forEach(b => { b.style.width = b.dataset.w + '%'; });
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('#skills').forEach(el => skillObs.observe(el));
+
+  // Contact form
+  document.getElementById('contactForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const msg = document.getElementById('formMsg');
+    msg.textContent = 'Pesan terkirim! Saya akan segera menghubungi Anda.';
+    e.target.reset();
+  });
+
+  // Custom cursor
+  const dot = document.getElementById('dot'), ring = document.getElementById('ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.transform = `translate(${mx-4}px, ${my-4}px)`; });
+  function loop() {
+    rx += (mx - rx) * .15; ry += (my - ry) * .15;
+    ring.style.transform = `translate(${rx-17}px, ${ry-17}px)`;
+    requestAnimationFrame(loop);
+  }
+  loop();
+
+  // Navbar active link
+  const sections = document.querySelectorAll('section');
+  const links = document.querySelectorAll('.nav-link');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+    links.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
+  });
+</script>
+</body>
+</html>
